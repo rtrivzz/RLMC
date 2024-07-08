@@ -134,7 +134,7 @@ def plot_best_data(train_error, valid_error, test_error):
     ax.legend()
 
     #fig.savefig('jena_best_model.png', dpi=300)
-    plt.show()
+    plt.savefig("jena best model.png")
 
 ############
 # evaluate #

@@ -268,7 +268,7 @@ def display_results(mae_losses, mape_losses, title="Model Performance"):
     plt.legend()
 
     plt.suptitle(title)
-    plt.show()
+    plt.savefig("loss plot.png")
 
 def run_rlmc(use_weight=True, use_td=True, use_extra=True, use_pretrain=True, epsilon=0.3):
     (train_X, valid_X, test_X, train_y, valid_y, test_y, train_error, valid_error, _) = load_data()
