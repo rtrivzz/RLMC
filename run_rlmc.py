@@ -5,6 +5,7 @@ import os
 import time
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from tqdm import trange
 from collections import Counter
 from scipy.special import softmax
@@ -250,6 +251,24 @@ def pretrain_actor(obs_dim, act_dim, hidden_dim, states, train_error, cls_weight
     print(f'valid acc for pretrained actor: {acc:.3f}') 
     return best_actor
 
+def display_results(mae_losses, mape_losses, title="Model Performance"):
+    plt.figure(figsize=(12, 6))
+    plt.subplot(1, 2, 1)
+    plt.plot(mae_losses, label='MAE Loss', color='blue')
+    plt.title('MAE Loss Over Epochs')
+    plt.xlabel('Epochs')
+    plt.ylabel('MAE Loss')
+    plt.legend()
+
+    plt.subplot(1, 2, 2)
+    plt.plot(mape_losses, label='MAPE Loss', color='red')
+    plt.title('MAPE Loss Over Epochs')
+    plt.xlabel('Epochs')
+    plt.ylabel('MAPE Loss (%)')
+    plt.legend()
+
+    plt.suptitle(title)
+    plt.show()
 
 def run_rlmc(use_weight=True, use_td=True, use_extra=True, use_pretrain=True, epsilon=0.3):
     (train_X, valid_X, test_X, train_y, valid_y, test_y, train_error, valid_error, _) = load_data()
@@ -413,7 +432,13 @@ def run_rlmc(use_weight=True, use_td=True, use_extra=True, use_pretrain=True, ep
                     q_lst.append(info['current_q'])
                     target_q_lst.append(info['target_q'])
 
+        mae_losses = []
+        mape_losses = []
+
         valid_mae_loss, valid_mape_loss, count_lst = evaluate_agent(agent, valid_states, valid_preds, valid_y)
+        # At the end of each epoch or evaluation phase
+        mae_losses.append(valid_mae_loss)
+        mape_losses.append(valid_mape_loss * 100)  # Multiplying by 100 to convert to percentage
         print(f'\n# Epoch {epoch + 1} ({(time.time() - t1)/60:.2f} min): '
               f'valid_mae_loss: {valid_mae_loss:.3f}\t'
               f'valid_mape_loss: {valid_mape_loss*100:.3f}\t' 
@@ -440,6 +465,7 @@ def run_rlmc(use_weight=True, use_td=True, use_extra=True, use_pretrain=True, ep
     print(f'test_mae_loss: {test_mae_loss:.3f}\t'
           f'test_mape_loss: {test_mape_loss*100:.3f}')
 
+    display_results(mae_losses, mape_losses, title=f"Performance of {exp_name}")
     return test_mae_loss, test_mape_loss
 
 
