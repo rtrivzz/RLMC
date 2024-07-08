@@ -104,6 +104,7 @@ def load_data():
     train_error = input_data['train_error']  # (55928, 9)
     valid_error = input_data['valid_error']  # (6867,  9)
     test_error  = input_data['test_error' ]  # (6867,  9)
+    plot_best_data(train_error, test_error, valid_error)
     return (train_X, valid_X, test_X, train_y, valid_y, test_y,
             train_error, valid_error, test_error)
 
@@ -132,8 +133,8 @@ def plot_best_data(train_error, valid_error, test_error):
     ax.set_xticklabels(labels)
     ax.legend()
 
-    fig.savefig('jena_best_model.png', dpi=300)
-
+    #fig.savefig('jena_best_model.png', dpi=300)
+    plt.show()
 
 ############
 # evaluate #
