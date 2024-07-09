@@ -458,7 +458,7 @@ def run_rlmc(use_weight=True, use_td=True, use_extra=True, use_pretrain=True, ep
             break
         epsilon = max(epsilon-0.2, 0.1)
             
-    for param, target_param in zip(agent.actor.parameters(), best_actor.parameters()):
+    '''for param, target_param in zip(agent.actor.parameters(), best_actor.parameters()):
         param.data.copy_(target_param)
     test_mae_loss, test_mape_loss, count_lst = evaluate_agent(
         agent, test_states, test_preds, test_y)
@@ -466,7 +466,7 @@ def run_rlmc(use_weight=True, use_td=True, use_extra=True, use_pretrain=True, ep
           f'test_mape_loss: {test_mape_loss*100:.3f}')
 
     display_results(mae_losses, mape_losses, title=f"Performance of {exp_name}")
-    return test_mae_loss, test_mape_loss
+    return test_mae_loss, test_mape_loss'''
 
 
 if __name__ == '__main__':
